@@ -1,0 +1,17 @@
+@startuml
+actor Пользователь
+participant "Веб-интерфейс" as UI
+participant "Бэкенд" as Backend
+participant "ML-сервис" as ML
+database "Временное хранилище" as TempStore
+
+Пользователь -> UI: загружает аудиофайл
+UI -> Backend: отправить файл на распознавание
+Backend -> TempStore: сохранить файл временно
+Backend -> ML: запросить распознавание аккордов
+ML -> ML: обработать аудио через модель
+ML --> Backend: вернуть временные метки и аккорды
+Backend -> TempStore: удалить файл
+Backend --> UI: передать результат
+UI -> Пользователь: отобразить плеер с аккордами
+@enduml

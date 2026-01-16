@@ -1,0 +1,111 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Гость" as Guest
+actor "Пользователь" as User
+actor "Модератор" as Moderator
+actor "Администратор" as Admin
+
+User -up-|> Guest
+Moderator -up-|> User
+Admin -up-|> Moderator
+
+rectangle {
+
+  package "Публичный доступ" {
+    usecase "Просмотр главной страницы" as UC1
+    usecase "Просмотр каталога подборов" as UC2
+    usecase "Просмотр подбора" as UC3
+    usecase "Просмотр статей" as UC4
+    usecase "Поиск и фильтрация" as UC5
+    usecase "Регистрация" as UC6
+  }
+
+  package "Аутентификация и профиль" {
+    usecase "Вход в систему" as UC7
+    usecase "Подтверждение e-mail" as UC8
+    usecase "Выход из системы" as UC9
+    usecase "Просмотр профиля" as UC10
+    usecase "Редактирование профиля" as UC11
+    usecase "Просмотр избранного" as UC12
+    usecase "Просмотр уведомлений" as UC13
+  }
+
+  package "Работа с подборами" {
+    usecase "Добавление подбора" as UC14
+    usecase "Редактирование подбора" as UC15
+    usecase "Удаление подбора" as UC16
+    usecase "Отправка на модерацию" as UC17
+    usecase "Добавление в избранное" as UC18
+    usecase "Валидация структуры" as UC19
+  }
+
+  package "Распознавание аккордов" {
+    usecase "Загрузка аудиофайла" as UC20
+    usecase "Просмотр результатов\nв плеере" as UC22
+  }
+
+  package "Обучающие материалы" {
+    usecase "Создание статьи" as UC23
+    usecase "Редактирование статьи" as UC24
+    usecase "Удаление статьи" as UC25
+  }
+
+  package "Модерация" {
+    usecase "Просмотр подборов\nна модерации" as UC26
+    usecase "Одобрение подбора" as UC27
+    usecase "Отклонение подбора" as UC28
+    usecase "Блокировка пользователя" as UC29
+    usecase "Разблокировка пользователя" as UC33
+  }
+
+  package "Администрирование" {
+    usecase "Управление ролями" as UC30
+    usecase "Удаление контента" as UC31
+    usecase "Просмотр логов действий" as UC32
+  }
+}
+
+Guest --> UC1
+Guest --> UC2
+Guest --> UC3
+Guest --> UC4
+Guest --> UC5
+Guest --> UC6
+
+User --> UC7
+User --> UC8
+User --> UC9
+User --> UC10
+User --> UC11
+User --> UC12
+User --> UC13
+User --> UC14
+User --> UC15
+User --> UC16
+User --> UC17
+User --> UC18
+User --> UC20
+User --> UC22
+User --> UC23
+User --> UC24
+User --> UC25
+
+Moderator --> UC26
+Moderator --> UC27
+Moderator --> UC28
+Moderator --> UC29
+Moderator --> UC33
+
+Admin --> UC30
+Admin --> UC31
+Admin --> UC32
+
+UC14 ..> UC19 : <<include>>
+UC17 ..> UC19 : <<include>>
+UC15 ..> UC17 : <<include>>
+UC20 ..> UC22 : <<include>>
+UC27 ..> UC26 : <<extend>>
+UC28 ..> UC26 : <<extend>>
+@enduml

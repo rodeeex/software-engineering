@@ -1,0 +1,78 @@
+@startuml
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+  AttributeFontSize 13
+  MethodFontSize 13
+}
+skinparam stereotypeFontSize 12
+skinparam packageStyle rectangle
+
+
+enum UserRole <<enumeration>> {
+  guest
+  user
+  moderator
+  admin
+}
+
+enum UserStatus <<enumeration>> {
+  active
+  blocked
+}
+
+enum ChordStatus <<enumeration>> {
+  draft
+  pending
+  published
+  rejected
+}
+
+
+class User {
+  + id: UUID
+  + username: string
+  + email: string
+  + passwordHash: string
+  + role: UserRole
+  + status: UserStatus
+  + registrationDate: DateTime
+}
+
+class Chord {
+  + id: UUID
+  + artist: string
+  + title: string
+  + lyrics: string
+  + key: string
+  + rhythm: string
+  + difficulty: Integer [0..10]
+  + status: ChordStatus
+  + createdAt: DateTime
+  + updatedAt: DateTime
+  + validateStructure(): Boolean
+}
+
+class Article {
+  + id: UUID
+  + title: string
+  + content: string {HTML}
+  + publicationDate: DateTime
+}
+
+class Notification {
+  + id: UUID
+  + type: string
+  + message: string
+  + hasRead: Boolean
+  + createdAt: DateTime
+}
+
+User "1" *-- "0..*" Chord : creates >
+User "1" *-- "0..*" Article : authors >
+User "1" *-- "0..*" Notification : receives >
+
+User "0..*" o-- "0..*" Chord : favorites >
+
+@enduml

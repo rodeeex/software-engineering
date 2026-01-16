@@ -1,0 +1,19 @@
+@startuml
+actor Модератор
+participant "Веб-интерфейс" as UI
+participant "Бэкенд" as Backend
+participant "Сервис модерации" as ModService
+participant "Сервис уведомлений" as NotifService
+database "База данных" as DB
+participant "SSE-поток" as SSE
+
+Модератор -> UI: выбирает подбор и нажимает «Одобрить»
+UI -> Backend: запрос на одобрение
+Backend -> ModService: одобрить подбор
+ModService -> DB: обновить статус → «опубликован»
+ModService -> NotifService: отправить уведомление автору
+NotifyService -> DB: сохранить уведомление
+NotifyService --> SSE: отправить событие в реальном времени
+SSE --> Автор: отобразить уведомление в браузере
+NotifyService --> Email: отправить email (асинхронно)
+@enduml

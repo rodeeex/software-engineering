@@ -1,0 +1,24 @@
+@startuml
+actor Пользователь
+participant "Веб-интерфейс" as UI
+participant "Бэкенд" as Backend
+participant "Сервис подборов" as ChordService
+database "База данных" as DB
+
+Пользователь -> UI: заполняет форму подбора
+UI -> Backend: отправить данные подбора
+Backend -> ChordService: создать черновик
+ChordService -> ChordService: проверить структуру текста
+alt структура корректна
+  ChordService -> DB: сохранить как черновик
+  ChordService -> ChordService: отправить на модерацию
+  ChordService -> DB: обновить статус → «на модерации»
+  ChordService --> Backend: подтверждение
+  Backend --> UI: показать успех
+  UI -> Пользователь: «Подбор отправлен на модерацию»
+else ошибка валидации
+  ChordService --> Backend: ошибка формата
+  Backend --> UI: сообщить об ошибке
+  UI -> Пользователь: выделить проблемные места
+end
+@enduml
